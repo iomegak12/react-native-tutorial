@@ -1,17 +1,17 @@
 import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 import { Formik } from 'formik';
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Button as Buttonv2 } from 'react-native';
 import { Text } from 'react-native-elements';
 import { Button } from 'react-native-elements/dist/buttons/Button';
 import { Input } from 'react-native-elements/dist/input/Input';
 import Toast from 'react-native-toast-message';
 import uuid from 'react-native-uuid';
 
-export default function NewScreen ({ navigation }) {
+export default function NewScreen({ navigation }) {
   const { getItem, setItem } = useAsyncStorage('todo');
 
-  function newTask (values) {
+  function newTask(values) {
     if (!values.title) {
       Toast.show({
         type: 'error',
@@ -20,7 +20,7 @@ export default function NewScreen ({ navigation }) {
       });
       return;
     }
-    
+
     //get todo array from storage
     getItem()
       .then((todoJSON) => {
@@ -59,19 +59,20 @@ export default function NewScreen ({ navigation }) {
 
   return (
     <Formik
-      initialValues={{title: ''}}
+      initialValues={{ title: '' }}
       onSubmit={newTask}
+      style={style.container}
     >
-      {({handleChange, handleBlur, handleSubmit, values}) => (
-        <View style={style.container}>
+      {({ handleChange, handleBlur, handleSubmit, values }) => (
+        <View style={{ flex: 1, flexDirection: 'column', padding: 20 }}>
           <Text h4>New Todo Item</Text>
-          <Input 
-            placeholder="Example: Cook, Clean, etc..." 
+          <Input
+            placeholder="Example: Cook, Clean, etc..."
             onChangeText={handleChange('title')}
             onBlur={handleBlur('title')}
             style={style.input}
           />
-          <Button title="Add" onPress={handleSubmit} style={style.button} />
+          <Buttonv2 title="Add" onPress={handleSubmit} style={style.button} />
         </View>
       )}
     </Formik>
@@ -81,12 +82,14 @@ export default function NewScreen ({ navigation }) {
 const style = StyleSheet.create({
   container: {
     marginTop: 10,
-    padding: 10
+    padding: 20,
+    flex: 1,
+    flexDirection: 'column'
   },
   input: {
     marginTop: 10
   },
   button: {
-    backgroundColor: '#228CDB'
+    backgroundColor: '#000000'
   }
 })
